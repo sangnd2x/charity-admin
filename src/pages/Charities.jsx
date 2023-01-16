@@ -1,7 +1,7 @@
 import React from 'react'
 // import { Container } from 'react-bootstrap';
 import Sidebar from '../components/Sidebar';
-import Card from '../components/CharityCard';
+import CharityCard from '../components/CharityCard';
 import Pagination from '../components/Pagination';
 import { Dropdown } from 'react-bootstrap';
 
@@ -32,22 +32,22 @@ const Charities = () => {
         </div>
         <div className="charities-container row">
           <div className="col-xl-4 col-md-6 col-sm-12 d-flex justify-content-center">
-            <Card />
+            <CharityCard />
           </div>
           <div className="col-xl-4 col-md-6 col-sm-12 d-flex justify-content-center">
-            <Card />
+            <CharityCard />
           </div>
           <div className="col-xl-4 col-md-6 col-sm-12 d-flex justify-content-center">
-            <Card />
+            <CharityCard />
           </div>
           <div className="col-xl-4 col-md-6 col-sm-12 d-flex justify-content-center">
-            <Card />
+            <CharityCard />
           </div>
           <div className="col-xl-4 col-md-6 col-sm-12 d-flex justify-content-center">
-            <Card />
+            <CharityCard />
           </div>
           <div className="col-xl-4 col-md-6 col-sm-12 d-flex justify-content-center">
-            <Card />
+            <CharityCard />
           </div>
         </div>
         <div className='d-flex justify-content-end mx-5'>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Nav } from 'react-bootstrap'
 import FireLogo from '../assets/img/fire.png';
 import UserAvatar from '../assets/img/user-avt.png'
-import { BsFillGrid1X2Fill, BsFillHeartFill, BsFillPeopleFill, BsFillPlusSquareFill, BsArrowRightSquare} from 'react-icons/bs';
+import { BsFillGrid1X2Fill, BsFillHeartFill, BsFillPeopleFill, BsFillPlusSquareFill, BsArrowRightSquare, BsFillWalletFill } from 'react-icons/bs';
 
 const Sidebar = () => {
   const isShow = JSON.parse(localStorage.getItem('openSidebar'));
@@ -35,6 +35,11 @@ const Sidebar = () => {
       icon: <BsFillHeartFill />
     },
     {
+      path: '/donations',
+      name: 'Donations',
+      icon: <BsFillWalletFill />
+    },
+    {
       path: '/new-charity',
       name: 'New Charity',
       icon: <BsFillPlusSquareFill />
@@ -54,14 +59,16 @@ const Sidebar = () => {
       </div>
       <div className="d-flex flex-column lower-section">
         <div className="userInfo">
-          <img src={UserAvatar} alt="user avatar" className="userAvatar" style={{display: show? 'inline-block' : 'none'}} />
+          <img src={UserAvatar} alt="user avatar" className="userAvatar" style={{ width: show? '80px' : '30px'}} />
           <p>Aidan</p>
         </div>
         <div className='d-flex flex-column justify-content-center align-items-start mt-5' style={{ height: 'auto', marginLeft: show ? '0px' : '0px' }}>
         {menu && menu.map((item, i) => (
           <Nav.Link href={item.path} key={i} className='d-flex flex-row align-items-center justify-content-start link'>
             <div className='icon' style={{ marginLeft: show? '30px' : '15px'}}>{item.icon}</div>
-            <div><p className='mx-3 mt-3' style={{ display: show? 'block' : 'none'}}>{item.name}</p></div>
+            <div>
+              <p className='mx-3 mt-3' style={{ display: show ? 'block' : 'none' }}>{item.name}</p>
+            </div>
           </Nav.Link>
         ))}
         </div>

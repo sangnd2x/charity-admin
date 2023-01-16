@@ -6,8 +6,8 @@
 }
 
 :root {
-  --main-color: RGBA(193, 88, 61, 1.00);
-  --secondary-color: RGBA(230, 244, 233, 1.00);
+  --sidebar-color: RGBA(193, 88, 61, 1.00);
+  --background-color: RGBA(255, 255, 255, 1.00);
   --hover-color: RGBA(167, 72, 48, 1.00)
 }
 
@@ -18,7 +18,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: RGBA(230, 244, 233, 1.00);
+  background-color: RGBA(255, 255, 255, 1.00);
 }
 
 code {
@@ -26,18 +26,25 @@ code {
     monospace;
 }
 
+/* Sidebar */
 .sidebarContainer {
   display: flex;
   flex-direction: column;
-  background-color: var(--main-color);
+  background-color: var(--sidebar-color);
   height: 100vh;
   transition: all 0.5;
   z-index: 100;
   box-shadow:  8px 0px 10px rgb(145, 52, 28), 4px 0px 4px rgb(194, 89, 63);
 }
 
+
 .brand {
-  color: var(--secondary-color);
+  color: var(--background-color);
+}
+
+.lower-section {
+  display: flex;
+  height: 100vh;
 }
 
 .userInfo {
@@ -46,22 +53,19 @@ code {
   justify-content: center;
   align-items: center;
   height: 150px;
-  color: var(--secondary-color);
+  color: var(--background-color);
 }
 
-.lower-section {
-  display: flex;
-  height: 100vh;
-}
-
-.toggle {
-  margin-top: 15px;
+.userAvatar {
+  border-radius: 50px;
+  border: 1px solid white;
+  margin-bottom: 10px;
 }
 
 .link {
   margin: 10px 0;
   width: 200px;
-  color: var(--secondary-color);
+  color: var(--background-color);
 }
 
 .link:hover {
@@ -72,21 +76,21 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 150px;
+  margin-top: 100px;
 }
 
 .exit-button {
   border: none;
-  background-color: var(--main-color);
-  color: var(--secondary-color)
+  background-color: var(--sidebar-color);
+  color: var(--background-color)
 }
 
 .icon {
-  color: var(--secondary-color);
+  color: var(--background-color);
 }
 
 .exit-icon {
-  color: var(--secondary-color);
+  color: var(--background-color);
   cursor: pointer;
 }
 
@@ -101,11 +105,11 @@ code {
 .card {
   height: 280px;
   width: 350px;
-  background-color: var(--secondary-color);
+  background-color: var(--background-color);
   margin: 20px 10px;
   border-radius: 10px;
   border: none;
-  box-shadow:  8px 8px 30px rgb(150, 176, 155), 4px 4px 4px rgb(108, 116, 109);
+  box-shadow:  8px 8px 30px rgb(137, 134, 134), 4px 4px 4px rgb(137, 134, 134);
 }
 
 .date, .target {
@@ -128,17 +132,12 @@ code {
   align-items: center;
 }
 
-.userAvatar {
-  width: 80px;
-  border-radius: 50px;
-  border: 1px solid white;
-}
-
 .searchBar {
   border-radius: 5px;
   border: none;
   margin-left: 20px;
   height: 30px;
+  background-color: rgb(233, 229, 229);
   /* box-shadow:  4px 4px 10px rgb(150, 176, 155), 2px 2px 2px rgb(108, 116, 109); */
 }
 
@@ -150,6 +149,13 @@ code {
 }
 
 .dropdown-button:hover, .dropdown-button:active{
-  background-color: var(--secondary-color);
-  color: var(--main-color);
+  background-color: var(--background-color);
+  color: var(--sidebar-color);
+}
+
+/* Dashboard */
+.dashboard-table {
+  border-radius: 10px;
+  border: none;
+  box-shadow:  8px 8px 30px rgb(137, 134, 134), 4px 4px 4px rgb(137, 134, 134);
 }

@@ -10,14 +10,14 @@ const Dashboard = () => {
         <Sidebar />
       </div>
       <div className='container'>
-        <div className="top-section">
+        <div className="top-section p-3">
           <div className="title">
             <h3>Dashboard</h3>
             <input type="text" placeholder='Search' className='searchBar'/> 
           </div>
         </div>
 
-        <div className="dashboardCard-container row">
+        <div className="dashboardCard-container row px-3">
           <div className="col-xl-4 col-md-6 col-sm-12 d-flex justify-content-center">
             <div className="card d-flex flex-row justify-content-around align-items-center" style={{ width: '28rem', height: 'auto' }} >
               <div className="card-body" style={{ margin: '3px' }}>
@@ -68,7 +68,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="latestDonations-container">
+        <div className="latestDonations-container px-4">
           <Table striped hover className='dashboard-table'>
             <thead>
               <tr>

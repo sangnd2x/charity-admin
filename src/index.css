@@ -6,9 +6,13 @@
 }
 
 :root {
-  --sidebar-color: RGBA(193, 88, 61, 1.00);
-  --background-color: RGBA(255, 255, 255, 1.00);
-  --hover-color: RGBA(167, 72, 48, 1.00)
+  --background-color: rgba(242, 237, 225, 1);
+  --red-color: rgba(245, 117, 95, 1);
+  --yellow-color: rgba(246, 189, 107, 1);
+  --pearl-color: rgba(75, 192, 166, 1);
+  --dark-color: rgba(60, 81, 93, 1);
+  --black-color: rgba(48, 59, 72, 1);
+  --card-color: rgba(214, 212, 197, 1)
 }
 
 body {

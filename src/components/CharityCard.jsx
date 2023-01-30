@@ -1,19 +1,30 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import Charity1 from '../assets/img/charity1.jpeg';
 import ProgressBar from './ProgressBar';
-import { BsBrushFill } from 'react-icons/bs';
+import { BsPencilSquare, BsXLg } from 'react-icons/bs';
 
 const CharityCard = () => {
-  const cardClick = () => {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
     console.log('clicked');
+    navigate('/edit-charity');
+  }
+
+  const handleDelete = () => {
+    console.log('Deleted!');
   }
 
   return (
-    <div className="card" onClick={cardClick}>
+    <div className="card" >
       <div className="card-body" style={{ margin: '3px' }}>
         <div className="card-title d-flex align-items-center justify-content-between">
           <h4>Charity 1</h4>
-          <BsBrushFill style={{ cursor: 'pointer'}}/>
+          <div>
+            <BsPencilSquare style={{ cursor: 'pointer' }} onClick={handleEdit} className='card-icons' />
+            <BsXLg style={{ cursor: 'pointer' }} onClick={handleDelete} className='card-icons' />
+          </div>
         </div>
         <div className="card-text">Lorem ipsum dolor sit amet.</div>
         <div className="card-img d-flex flex-row justify-content-center" >

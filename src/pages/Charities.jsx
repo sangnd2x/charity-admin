@@ -1,10 +1,16 @@
 import React from 'react'
-// import { Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import CharityCard from '../components/CharityCard';
 import Pagination from '../components/Pagination';
 
 const Charities = () => {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate('/edit-charity');
+  }
+
   return (
     <div className='d-flex flex-row' style={{ width: '100%'}}>
       <div>

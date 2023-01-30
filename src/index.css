@@ -7,12 +7,13 @@
 
 :root {
   --background-color: rgba(242, 237, 225, 1);
-  --red-color: rgba(245, 117, 95, 1);
-  --yellow-color: rgba(246, 189, 107, 1);
-  --pearl-color: rgba(75, 192, 166, 1);
-  --dark-color: rgba(60, 81, 93, 1);
-  --black-color: rgba(48, 59, 72, 1);
-  --card-color: rgba(214, 212, 197, 1)
+  --red: rgba(229, 124, 102, 1);
+  --yellow: rgba(238, 192, 119, 1);
+  --pearl: rgba(109, 188, 166, 1);
+  --dark: rgba(59, 71, 83, 1);
+  --darker: rgba(48, 58, 68, 1);
+  --white: rgba(227, 232, 229, 1);
+  --card: rgba(232, 228, 216, 1);
 }
 
 body {
@@ -22,7 +23,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: RGBA(255, 255, 255, 1.00);
+  background-color: var(--background-color);
 }
 
 code {
@@ -34,7 +35,7 @@ code {
 .sidebarContainer {
   display: flex;
   flex-direction: column;
-  background-color: var(--sidebar-color);
+  background-color: var(--red);
   height: 100vh;
   width: 200px;
   transition: all 0.5;
@@ -119,7 +120,7 @@ code {
 .card {
   width: 25rem;
   height: 18rem;
-  background-color: var(--background-color);
+  background-color: var(--card);
   margin: 20px 10px;
   border-radius: 10px;
   border: none;
@@ -183,15 +184,18 @@ code {
 .sign-card {
   height: auto;
   width: 400px;
-  background-color: var(--background-color);
+  background-color: var(--darker);
+  color: var(--white);
   margin: 20px 10px;
   border-radius: 10px;
   border: none;
-  box-shadow:  8px 8px 30px rgb(208, 205, 205), 4px 4px 4px rgb(236, 235, 235);
+  /* box-shadow:  8px 8px 30px rgb(208, 205, 205), 4px 4px 4px rgb(236, 235, 235); */
 }
 
 .sign-button {
   width: 19rem;
+  background-color: var(--pearl);
+  border: none;
 }
 
 .create-account {
@@ -201,6 +205,6 @@ code {
 .signup {
   font-weight: 600;
   font-style: italic;
-  color: blue;
+  color: var(--pearl);
   cursor: pointer;
 }

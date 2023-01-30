@@ -17,7 +17,7 @@ const CharityCard = () => {
   }
 
   return (
-    <div className="card" >
+    <div className="card">
       <div className="card-body" style={{ margin: '3px' }}>
         <div className="card-title d-flex align-items-center justify-content-between">
           <h4>Charity 1</h4>

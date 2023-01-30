@@ -67,7 +67,7 @@ const Sidebar = () => {
           <Nav.Link href={item.path} key={i} className='d-flex flex-row align-items-center justify-content-start link'>
             <div className='icon'>{item.icon}</div>
             <div>
-              <p className='mx-3 mt-3 link-items'>{item.name}</p>
+              <p className='mx-3 mt-3'>{item.name}</p>
             </div>
           </Nav.Link>
         ))}

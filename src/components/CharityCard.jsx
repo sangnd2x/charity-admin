@@ -31,7 +31,7 @@ const CharityCard = () => {
           <img src={Charity1} alt="charity1" style={{ width: '20rem', height: '5rem'}}/>
         </div>
         <div className="card-text">
-          <ProgressBar bgcolor={`RGBA(196, 103, 77, 1.00)`} completed={80} />
+          <ProgressBar bgcolor={`rgba(229, 124, 102, 1)`} completed={80} />
         </div>
         <div className="date">
           <p>StartDate</p>

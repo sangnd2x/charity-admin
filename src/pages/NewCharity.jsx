@@ -112,7 +112,7 @@ const NewCharity = () => {
             </Form.Group>
           </div>
         </Form>
-        <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
+        <Button variant="primary" type="submit" className='button' onClick={handleSubmit}>Submit</Button>
       </div>
     </div>
   </div>

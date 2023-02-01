@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axiosReq from '../components/api/axios';
 import { Form, Button } from 'react-bootstrap'
 
 const Signup = () => {
@@ -9,8 +10,24 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
-  const handleSubmit = () => {
-    navigate('/sign-in');
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    formData.append('email', email);
+
+    try {
+      const response = await axiosReq.post('/admin/sign-up', formData);
+      console.log(response);
+      // navigate to sign in after sign up successfully
+      if (response.status === 200) {
+        navigate('/sign-in');
+      } else {
+        return
+      }
+    } catch (error) {
+      alert(error.response.data.msg);
+    }
   }
 
 
@@ -33,7 +50,7 @@ const Signup = () => {
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="text" placeholder="Password" name='password' 
+            <Form.Control type="password" placeholder="Password" name='password' 
             onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>

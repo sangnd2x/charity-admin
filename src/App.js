@@ -17,7 +17,7 @@ function App() {
         <Route path='/sign-up' element={<Signup />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/charities' element={<Charities />} />
-        <Route path='/edit-charity' element={<EditCharity />} />
+        <Route path='/edit-charity/:charityId' element={<EditCharity />} />
         <Route path='/donations' element={<Donations />} />
         <Route path='/new-charity' element={<NewCharity />} />
         <Route path='/users' element={<Users />} />

@@ -1,23 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axiosReq from '../components/api/axios';
 import Sidebar from '../components/Sidebar';
 import { Form, Button } from 'react-bootstrap';
 
 const EditCharity = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [charityId, setCharityId] = useState(location.state.charityId);
+  const [charity, setCharity] = useState({});
+
+  // Fetch details of charity
+  useEffect(() => {
+    const fetchEditCharity = async () => {
+      const response = await axiosReq.get(`/admin/edit-charity/${charityId}`);
+      setCharity(response.data);
+    }
+
+    fetchEditCharity();
+  }, []);
+
+  // console.log(charity);
+
   const [name, setName] = useState('');
   const [recipient, setRecipient] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [target, setTarget] = useState(0);
+  const [target, setTarget] = useState('');
   const [status, setStatus] = useState('');
   const [longDesc, setLongDesc] = useState('');
   const [shortDesc, setShortDesc] = useState('');
   const [images, setImages] = useState([]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (id) => {
+    // e.preventDefault();
 
     const data = new FormData();
+    data.append('id', id);
     data.append('name', name);
     data.append('recipient', recipient);
     data.append('startDate', startDate);
@@ -29,12 +49,15 @@ const EditCharity = () => {
     for (let i = 0; i < images.length; i++){
       data.append('images', images[i]);
     }
-    console.log(images);
+    // console.log(images);
     
     const postCharity = async () => {
       try {
-        const response = await axiosReq.post('/new-charity', data)
+        const response = await axiosReq.post('/admin/edit-charity', data)
         console.log(response);
+        if (response.status === 200) {
+          navigate('/charities');
+        }
       } catch (error) {
         console.log(error);
       }
@@ -59,22 +82,26 @@ const EditCharity = () => {
           <div className='col-xl-6 col-md-5 col-sm-12'>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
-              <Form.Control type="text" placeholder="Charity Name" name='name' 
+              <Form.Control type="text" placeholder="Charity Name" name='name'
+                defaultValue={charity.name}
                 onChange={(e) => setName(e.target.value)}/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Recipient</Form.Label>
-              <Form.Control type="text" placeholder="Recipient" name='recipient' 
+              <Form.Control type="text" placeholder="Recipient" name='recipient'
+                defaultValue={charity.recipient}    
                 onChange={(e) => setRecipient(e.target.value)}/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Start Date</Form.Label>
-              <Form.Control type="date" placeholder="Recipient" name='startDate' 
+              <Form.Control type="date" placeholder="Recipient" name='startDate'
+                defaultValue={charity.startDate? charity.startDate.split('T')[0] : charity.startDate}   
                 onChange={(e) => setStartDate(e.target.value)}/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>End Date</Form.Label>
               <Form.Control type="date" placeholder="Recipient" name='endDate' 
+                defaultValue={charity.endDate? charity.endDate.split('T')[0] : charity.endDate}
                 onChange={(e) => setEndDate(e.target.value)}/>
             </Form.Group> 
             <Form.Group className="mb-3">
@@ -86,14 +113,15 @@ const EditCharity = () => {
           <div className='col-xl-6 col-md-5 col-sm-12'>
             <Form.Group className="mb-3">
               <Form.Label>Target</Form.Label>
-              <Form.Control type="number" placeholder="Target" step={1000000} name='target' 
+              <Form.Control type="number" placeholder="Target" step={1000000} name='target'
+                defaultValue={charity.target}    
                 onChange={(e) => setTarget(e.target.value)}/>
             </Form.Group>
               <Form.Group className="mb-3">
               <Form.Label>Status</Form.Label>
-              <Form.Select aria-label="Default select example" name='status' 
-                  onChange={(e) => setStatus(e.target.value)}
-                defaultValue="default">
+              <Form.Select aria-label="Default select example" name='status'
+                defaultValue={charity.status} 
+                onChange={(e) => setStatus(e.target.value)}>
                 <option value="default" disabled>Select status</option>
                 <option value="ongoing">On-going</option>
                 <option value="upcoming">Up-coming</option>
@@ -102,17 +130,19 @@ const EditCharity = () => {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Short Description</Form.Label>
-              <Form.Control type="text" placeholder="Short Description" name='short_desc' 
+              <Form.Control type="text" placeholder="Short Description" name='short_desc'
+                defaultValue={charity.short_desc}    
                 onChange={(e) => setShortDesc(e.target.value)}/>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Long Description</Form.Label>
-              <Form.Control as="textarea" placeholder="Long Description" style={{height: '7.7rem'}} name='long_desc' 
+              <Form.Control as="textarea" placeholder="Long Description" style={{ height: '7.7rem' }} name='long_desc' 
+                defaultValue={charity.long_desc}
                 onChange={(e) => setLongDesc(e.target.value)}/>
             </Form.Group>
           </div>
         </Form>
-        <Button variant="primary" type="submit" onClick={handleSubmit}>Edit</Button>
+        <Button variant="primary" type="submit" onClick={() => handleSubmit(charity._id)}>Edit</Button>
       </div>
     </div>
   </div>

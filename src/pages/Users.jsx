@@ -1,8 +1,48 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar'
-import { Table } from 'react-bootstrap'
+import { useState, useEffect } from 'react';
+import axiosReq from '../components/api/axios';
+import Sidebar from '../components/Sidebar';
+import { Table } from 'react-bootstrap';
 
 const Users = () => {
+  const [users, setUsers] = useState([]);
+
+  // Search
+  const [query, setQuery] = useState('');
+  const [searched, setSearched] = useState(false);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await axiosReq('/admin/users');
+      if (response.status === 200) {
+        console.log(response.data);
+        setUsers(response.data)
+      } else {
+        return;
+      }
+    }
+
+    fetchUsers();
+  }, [searched]);
+
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
+    if (query) {
+      setSearched(true);
+    } else {
+      setSearched(false);
+    }
+
+    const fetchSearchedUser = async () => {
+      const response = await axiosReq.get(`/admin/search/user/${query}`);
+      // console.log(response);
+      if (response.status === 200) {
+        setUsers(response.data);
+      }
+    }
+
+    fetchSearchedUser();
+  }
+
   return (
     <div className='d-flex flex-row' style={{ width: '100%'}}>
     <div>
@@ -12,42 +52,33 @@ const Users = () => {
       <div className="top-section p-3">
         <div className="title">
           <h3>Users</h3>
-          <input type="text" placeholder='Search' className='searchBar'/> 
+            <input type="text" placeholder='Search' className='searchBar'
+            onChange={(e) => handleSearch(e)}/> 
         </div>
       </div>
       <div className="newCharity-container row px-5">
       <Table striped hover className='dashboard-table'>
           <thead>
             <tr>
-              <th>#</th>
+              <th>ID</th>
               <th>Name</th>
               <th>Email</th>
               <th>Registerd At</th>
-              <th>Lastest Donation</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>markcuban@mark.com</td>
-              <td>20-01-2023</td>
-              <td>29-01-2023</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Bob</td>
-              <td>bobdylan@bob.com</td>
-              <td>22-01-2023</td>
-              <td>29-01-2023</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Jay</td>
-              <td>jayz@gmail.com</td>
-              <td>25-01-2023</td>
-              <td>30-01-2023</td>
-            </tr>
+            {users && users.map(user => (
+              <tr key={user._id}>
+                <td>{user._id}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>{new Date(user.createdAt).toLocaleDateString('en-GB')}</td>
+                {user.status === 'active' ?
+                  <td><span style={{ color: 'rgba(109, 188, 166, 1)', fontWeight: 'bold'}}>{user.status}</span></td> :
+                  <td><span style={{ color: 'rgba(229, 124, 102, 1)', fontWeight: 'bold'}}>{user.status}</span></td>}
+              </tr>
+            ))}
           </tbody>
         </Table>
       </div>

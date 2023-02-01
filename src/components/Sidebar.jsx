@@ -1,26 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Nav } from 'react-bootstrap'
 import FireLogo from '../assets/img/fire.png';
 import UserAvatar from '../assets/img/user-avt.png'
 import { BsFillGrid1X2Fill, BsFillHeartFill, BsFillPeopleFill, BsFillPlusSquareFill, BsArrowRightSquare, BsFillWalletFill } from 'react-icons/bs';
 
 const Sidebar = () => {
-  const isShow = JSON.parse(localStorage.getItem('openSidebar'));
-  
-  // console.log(isShow)
-  const [show, setShow] = useState(isShow? isShow: false);
-  
-  useEffect(() => {
-    localStorage.setItem('openSidebar', JSON.stringify(show));
-  }, [show])
+  const [signedIn, setSignedIn] = useState(localStorage.getItem('token') ? true : false);
+  const navigate = useNavigate();
 
-  const toggleOn = () => {
-    setShow(true);
-    // console.log(show);
-  };
+  // Sign out
+  const handleSignout = () => {
+    localStorage.removeItem('token');
+    navigate('/sign-in');
+  }
 
-  const toggleOff = () => {
-    setShow(false);
+  //Sign in
+  const handleSignin = () => {
+    navigate('/sign-in');
   }
 
   const menu = [
@@ -72,10 +69,15 @@ const Sidebar = () => {
           </Nav.Link>
         ))}
         </div>
-        <div className="exit">
-          <button className='exit-button'>Exit</button>
-          <BsArrowRightSquare className='exit-icon'/>
-        </div>
+        {signedIn ?
+        <div className="exit" onClick={handleSignout}>
+          <button className='exit-button'>Sign Out</button>
+          <BsArrowRightSquare className='exit-icon' />
+        </div> :
+        <div className="exit" onClick={handleSignin}>
+          <button className='exit-button'>Sign In</button>
+          <BsArrowRightSquare className='exit-icon' />
+        </div>}
       </div>
     </div>
   )

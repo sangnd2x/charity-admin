@@ -1,9 +1,35 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar'
+import { useState, useEffect } from 'react';
+import axiosReq from '../components/api/axios';
+import Sidebar from '../components/Sidebar';
 import { BsFillWalletFill, BsFillHeartFill, BsFillPeopleFill } from 'react-icons/bs';
 import { Table } from 'react-bootstrap';
 
 const Dashboard = () => {
+  const [charities, setCharities] = useState([]);
+  const [donations, setDonations] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchCharities = async () => {
+      const response = await axiosReq('/admin/charities');
+      setCharities(response.data);
+    }
+    const fetchDonations = async () => {
+      const response = await axiosReq('/admin/donations');
+      setDonations(response.data);
+    }
+    const fetchUsers = async () => {
+      const response = await axiosReq('/admin/users');
+      setUsers(response.data);
+    }
+
+    fetchCharities();
+    fetchDonations();
+    fetchUsers();
+  }, []);
+
+  const totalDonation = donations.map(donation => parseInt(donation.amount)).reduce((a, b) => a + b, 0);
+
   return (
     <div className='d-flex flex-row'>
       <div>
@@ -25,12 +51,12 @@ const Dashboard = () => {
                   <h2>Charities</h2>
                 </div>
                 <div className="card-text">
-                  <p>On-going: 20</p>
-                  <p>Up-coming: 12</p>
+                  <p>On-going: {charities.filter(charity => charity.status === 'ongoing').length}</p>
+                  <p>Up-coming: {charities.filter(charity => charity.status === 'upcoming').length}</p>
                 </div>
               </div>
               <div>
-                <BsFillHeartFill style={{ width: '60px', height: '60px', marginRight: '20px'}}/>
+                <BsFillHeartFill style={{ width: '60px', height: '60px', marginRight: '20px', color: 'rgba(229, 124, 102, 1)'}}/>
               </div>
             </div>
           </div>
@@ -41,12 +67,12 @@ const Dashboard = () => {
                   <h2>Total Donations</h2>
                 </div>
                 <div className="card-text">
-                  <p>Donations: 200</p>
-                  <p>Amount: $1,200,000</p>
+                  <p>Donations: {donations.length}</p>
+                  <p>Amount: {Intl.NumberFormat('en-US').format(totalDonation)} VND</p>
                 </div>
               </div>
               <div>
-                <BsFillWalletFill style={{ width: '60px', height: '60px', marginRight: '20px'}}/>
+                <BsFillWalletFill style={{ width: '60px', height: '60px', marginRight: '20px', color: 'rgba(109, 188, 166, 1)'}}/>
               </div>
             </div>
           </div>
@@ -57,12 +83,12 @@ const Dashboard = () => {
                   <h2>Users</h2>
                 </div>
                 <div className="card-text">
-                  <p>Admins: 10</p>
-                  <p>Donors: 320</p>
+                  <p>Admins: {users.filter(user => user.role === 'admin').length}</p>
+                  <p>Donors: {users.filter(user => user.role === 'donor').length}</p>
                 </div>
               </div>
               <div>
-                <BsFillPeopleFill style={{ width: '60px', height: '60px', marginRight: '20px'}}/>
+                <BsFillPeopleFill style={{ width: '60px', height: '60px', marginRight: '20px', color: 'rgba(238, 192, 119, 1)'}}/>
               </div>
             </div>
           </div>
@@ -72,30 +98,23 @@ const Dashboard = () => {
           <Table striped hover className='dashboard-table'>
             <thead>
               <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
+                <th>ID</th>
+                <th>Donor</th>
+                <th>Charity</th>
+                <th>Donated</th>
+                <th>Donated At</th>
               </tr>
             </thead>
             <tbody>
+              {donations && donations.map(donation => (
               <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td>{donation._id}</td>
+                <td>{donation.user.username}</td>
+                <td>{donation.charity.charityName}</td>
+                <td>VND {Intl.NumberFormat('en-US').format(donation.amount)}</td>
+                <td>{new Date(donation.donatedAt).toLocaleDateString('en-GB')}</td>
               </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td colSpan={2}>Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              ))}
             </tbody>
           </Table>
         </div>

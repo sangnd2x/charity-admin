@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import { useNavigate  } from 'react-router-dom';
 import axiosReq from '../components/api/axios';
+import { ToastContainer, toast } from 'react-toastify';
 import Sidebar from '../components/Sidebar';
 import { Form, Button } from 'react-bootstrap';
 
 const NewCharity = () => {
+  const navigate = useNavigate();
   const [signedIn, setSignedIn] = useState(localStorage.getItem('token') ? true : false);
   const [name, setName] = useState('');
   const [recipient, setRecipient] = useState('');
@@ -35,7 +38,21 @@ const NewCharity = () => {
     const postCharity = async () => {
       try {
         const response = await axiosReq.post('/admin/new-charity', data)
-        console.log(response);
+        if (response.status === 200) {
+          toast.success('Signed In', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setTimeout(() => {
+            navigate('/charities');
+          }, 1500);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -114,7 +131,19 @@ const NewCharity = () => {
               </Form.Group>
             </div>
           </Form>
-          <Button variant="primary" type="submit" className='button' onClick={handleSubmit}>Submit</Button>
+            <Button variant="primary" type="submit" className='button' onClick={handleSubmit}>Submit</Button>
+            <ToastContainer
+              position="top-right"
+              autoClose={1000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light">
+            </ToastContainer>
         </div>
       </div> : <div className='p-3'><h1>You need to sign in!</h1></div>}
     </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 import axiosReq from '../components/api/axios';
 import { Form, Button } from 'react-bootstrap'
 
@@ -18,7 +19,19 @@ const Signin = () => {
       // navigate to sign in after sign up successfully
       if (response.status === 200) {
         localStorage.setItem('token', response.data.accessToken);
-        navigate('/dashboard');
+        toast.success('Signed In', {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1500);
       } else {
         return
       }
@@ -48,6 +61,18 @@ const Signin = () => {
           </Form.Group>
           <Button variant="primary" type="submit" className='sign-button' onClick={handleSubmit}>Sign In</Button>
           <p className='create-account'>Don't have an account? <span className='signup' onClick={handleSignup}>Sign up</span></p>
+          <ToastContainer
+            position="top-right"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light">
+          </ToastContainer>
         </div>
       </div>
     </div>

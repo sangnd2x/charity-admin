@@ -107,7 +107,7 @@ const Dashboard = () => {
             </thead>
             <tbody>
               {donations && donations.map(donation => (
-              <tr>
+              <tr key={donation._id}>
                 <td>{donation._id}</td>
                 <td>{donation.user.username}</td>
                 <td>{donation.charity.charityName}</td>

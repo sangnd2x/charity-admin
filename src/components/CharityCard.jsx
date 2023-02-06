@@ -4,9 +4,9 @@ import axiosReq from './api/axios';
 import ProgressBar from './ProgressBar';
 import { BsPencilSquare, BsXLg } from 'react-icons/bs';
 
-const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex }) => {
+const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex, donated }) => {
   const navigate = useNavigate();
-
+  
   const results = charities.slice(startIndex, endIndex);
   // console.log(results);
   const handleEdit = (id) => {
@@ -49,14 +49,18 @@ const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex 
                 <img src={charity.images[0]} alt="charity1" style={{ width: '33rem', height: '5rem' }} />
               </div>
               <div className="card-text">
-                <ProgressBar bgcolor={`rgba(229, 124, 102, 1)`} completed={80} />
+                <ProgressBar bgcolor={`rgba(229, 124, 102, 1)`} completed={donated.filter(donate => donate.charityName === charity.name)[0].progress}/>
               </div>
               <div className="date">
                 <p>{new Date(charity.startDate).toLocaleDateString('en-GB')}</p>
                 <p>{new Date(charity.endDate).toLocaleDateString('en-GB')}</p>
               </div>
               <div className="target">
-                <p>Current: 10.000.000 VND</p>
+                <p>Current: {donated.map(donate => {
+                  if (donate.charityName === charity.name) {
+                    return Intl.NumberFormat('en-US').format(donate.donated);
+                  }
+                })} VND</p>
                 <p>Target: {Intl.NumberFormat('en-US').format(charity.target)} VND</p>
               </div>
             </div>

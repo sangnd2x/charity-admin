@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axiosReq from '../components/api/axios';
 import Sidebar from '../components/Sidebar';
 import CharityCard from '../components/CharityCard';
 import Pagination from '../components/Pagination';
-import { Button } from 'react-bootstrap';
 
 const Charities = () => {
-  const navigate = useNavigate();
   const [charities, setCharities] = useState([]);
+  const [donated, setDonated] = useState([]);
   const [isTouched, setIsTouched] = useState(false);
   
   // Pagination
@@ -26,7 +24,8 @@ const Charities = () => {
       const response = await axiosReq.get('/admin/charities');
       // console.log(response);
       if (response.status === 200) {
-        setCharities(response.data);
+        setCharities(response.data.charities);
+        setDonated(response.data.donated);
       } else {
         return;
       }
@@ -72,11 +71,14 @@ const Charities = () => {
           </div>
         </div>
         <div className="row">
-          <CharityCard charities={charities}
+          <CharityCard
+            charities={charities}
+            donated={donated}
             isTouched={isTouched}
             setIsTouched={setIsTouched}
             startIndex={startIndex}
-            endIndex={endIndex} />
+            endIndex={endIndex}
+          />
         </div>
       </div>
     </div>

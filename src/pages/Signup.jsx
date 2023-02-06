@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 import axiosReq from '../components/api/axios';
 import { Form, Button } from 'react-bootstrap'
 
@@ -21,12 +22,34 @@ const Signup = () => {
       console.log(response);
       // navigate to sign in after sign up successfully
       if (response.status === 200) {
-        navigate('/sign-in');
+        toast.success('Please check your email for confirmation!', {
+          position: "top-center",
+          autoClose: 2800,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          navigate('/sign-in');
+        }, 3500);
       } else {
         return
       }
     } catch (error) {
-      alert(error.response.data.msg);
+      // alert(error.response.data.msg);
+      toast.error(error.response.data.msg, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -56,6 +79,18 @@ const Signup = () => {
           </Form.Group>
           <Button variant="primary" type="submit" className='sign-button' onClick={handleSubmit}>Sign Up</Button>
         </div>
+        <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light">
+          </ToastContainer>
       </div>
     </div>
   )

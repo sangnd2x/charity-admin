@@ -12,7 +12,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchCharities = async () => {
       const response = await axiosReq('/admin/charities');
-      setCharities(response.data);
+      setCharities(response.data.charities);
     }
     const fetchDonations = async () => {
       const response = await axiosReq('/admin/donations');

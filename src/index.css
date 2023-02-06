@@ -61,6 +61,11 @@ span {
   background-color: var(--button-hover);
 }
 
+.error-msg {
+  color: red;
+  font-style: italic;
+}
+
 /* Sidebar */
 .sidebarContainer {
   display: flex;
@@ -156,7 +161,6 @@ span {
   border-radius: 10px;
   border: none;
   box-shadow:  8px 8px 30px rgb(163, 159, 159), 4px 4px 4px rgb(153, 145, 145);
-  cursor: pointer;
 }
 
 .card-icons {

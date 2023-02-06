@@ -14,7 +14,7 @@ const Users = () => {
     const fetchUsers = async () => {
       const response = await axiosReq('/admin/users');
       if (response.status === 200) {
-        console.log(response.data);
+        // console.log(response.data);
         setUsers(response.data)
       } else {
         return;

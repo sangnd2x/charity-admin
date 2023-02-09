@@ -9,7 +9,6 @@ const Pagination = ({ results, page, setPage, count }) => {
     } else {
       setPage(1)
     }
-      
   }
 
   const prevPage = () => {

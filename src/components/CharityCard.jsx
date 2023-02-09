@@ -6,7 +6,8 @@ import { BsPencilSquare, BsXLg } from 'react-icons/bs';
 
 const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex, donated }) => {
   const navigate = useNavigate();
-  
+  const [status, setStatus] = useState('');
+  console.log(status);
   const results = charities.slice(startIndex, endIndex);
   // console.log(results);
   const handleEdit = (id) => {
@@ -14,8 +15,12 @@ const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex,
     navigate(`/edit-charity/${charityId}`, { state: { charityId } });
   };
 
-  const handleDelete = async (id) => {
-    const response = await axiosReq.get(`/admin/delete-charity/${id}`);
+  const handleDelete = async (status, id) => {
+    setStatus(status);
+    const data = new FormData();
+    data.append('status', status);
+    data.append('charityId', id);
+    const response = await axiosReq.post(`/admin/delete-charity`, data);
     console.log(response);
     if (response.status === 200) {
       setIsTouched(!isTouched);
@@ -27,8 +32,8 @@ const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex,
   return (
     <div className="charities-container row px-3">
       {results && results.map(charity => (
-        <div className="col-xl-6 col-md-6 col-sm-12 d-flex justify-content-center" key={charity._id}>
-          <div className="card">
+        <div className="col-xl-4 col-md-4 col-sm-12 d-flex justify-content-center" key={charity._id}>
+          <div className={`card ${charity.status === 'ongoing' ? 'border-green' : charity.status === 'upcoming' ? 'border-yellow' : 'border-red'}`}>
             <div className="card-body" style={{ margin: '1px' }}>
               <div className="card-title d-flex align-items-center justify-content-between">
                 <div className="d-flex flex-column">
@@ -39,9 +44,25 @@ const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex,
                     <h6 className="red">{charity.status}</h6>
                   }
                 </div>
-                <div>
-                  <BsPencilSquare style={{ cursor: 'pointer' }} onClick={() => handleEdit(charity._id)} className='card-icons' />
-                  <BsXLg style={{ cursor: 'pointer' }} onClick={() => handleDelete(charity._id)} className='card-icons' />
+                <div className='d-flex flex-column'>
+                  <button
+                    type='button'
+                    className='card-button mb-1'
+                    onClick={() => handleEdit(charity._id)}
+                  >
+                    Edit
+                  </button>
+                  <select
+                    className={`${charity.status === 'ongoing' ? 'buttonBorder-green' : charity.status === 'upcoming' ? 'buttonBorder-yellow' : 'buttonBorder-red'}`}
+                    defaultValue={charity.status}
+                    onChange={(e) => handleDelete(e.target.value, charity._id)}
+                  >
+                    <option value="ongoing">On-going</option>
+                    <option value="upcoming">Up-coming</option>
+                    <option value="stopped">Stopped</option>
+                  </select>
+                  {/* <BsPencilSquare style={{ cursor: 'pointer' }} onClick={() => handleEdit(charity._id)} className='card-icons' />
+                  <BsXLg style={{ cursor: 'pointer' }} onClick={() => handleDelete(charity._id)} className='card-icons' /> */}
                 </div>
               </div>
               <div className="card-text">{charity.short_desc}</div>
@@ -52,16 +73,16 @@ const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex,
                 <ProgressBar bgcolor={`rgba(229, 124, 102, 1)`} completed={donated.filter(donate => donate.charityName === charity.name)[0].progress}/>
               </div>
               <div className="date">
-                <p>{new Date(charity.startDate).toLocaleDateString('en-GB')}</p>
-                <p>{new Date(charity.endDate).toLocaleDateString('en-GB')}</p>
+                <p className='card-span'>{new Date(charity.startDate).toLocaleDateString('en-GB')}</p>
+                <p className='card-span'>{new Date(charity.endDate).toLocaleDateString('en-GB')}</p>
               </div>
               <div className="target">
-                <p>Current: {donated.map(donate => {
+                <p><span className='card-span'>Raised:</span> {donated.map(donate => {
                   if (donate.charityName === charity.name) {
                     return Intl.NumberFormat('en-US').format(donate.donated);
                   }
                 })} VND</p>
-                <p>Target: {Intl.NumberFormat('en-US').format(charity.target)} VND</p>
+                <p><span className='card-span'>Goal:</span> {Intl.NumberFormat('en-US').format(charity.target)} VND</p>
               </div>
             </div>
           </div>

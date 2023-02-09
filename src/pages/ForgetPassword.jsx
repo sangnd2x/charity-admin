@@ -5,27 +5,23 @@ import axiosReq from '../components/api/axios';
 import { Form, Button } from 'react-bootstrap';
 import Logo from '../assets/img/logo.png';
 
-const Signup = () => {
+const ForgetPassword = () => {
   const navigate = useNavigate();
-
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
-    formData.append('email', email);
+    const data = new FormData();
+    data.append('username', username);
+    data.append('email', email);
 
     try {
-      const response = await axiosReq.post('/admin/sign-up', formData);
-      console.log(response);
-      // navigate to sign in after sign up successfully
+      const response = await axiosReq.post('/admin/user/forget-password', data);
+      // console.log(response.data);
       if (response.status === 200) {
-        toast.success('Please check your email for confirmation!', {
+        toast.success('Please check your email to reset password', {
           position: "top-center",
-          autoClose: 2800,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -33,17 +29,12 @@ const Signup = () => {
           progress: undefined,
           theme: "light",
         });
-        setTimeout(() => {
-          navigate('/sign-in');
-        }, 3500);
-      } else {
-        return
       }
     } catch (error) {
-      // alert(error.response.data.msg);
-      toast.error(error.response.data.msg, {
+      console.log(error);
+      toast.error(error.data.msg, {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -52,6 +43,8 @@ const Signup = () => {
         theme: "light",
       });
     }
+
+    // navigate('/user/reset-password');
   }
 
   return (
@@ -74,13 +67,7 @@ const Signup = () => {
             onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" name='password' 
-            onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit" className='sign-button' onClick={handleSubmit}>Sign Up</Button>
+          <Button variant="primary" type="submit" className='sign-button' onClick={handleSubmit}>Reset Password</Button>
         </div>
         <ToastContainer
           position="top-right"
@@ -99,4 +86,4 @@ const Signup = () => {
   )
 }
 
-export default Signup;
+export default ForgetPassword

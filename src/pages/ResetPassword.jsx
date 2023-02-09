@@ -5,27 +5,26 @@ import axiosReq from '../components/api/axios';
 import { Form, Button } from 'react-bootstrap';
 import Logo from '../assets/img/logo.png';
 
-const Signup = () => {
+const ResetPassword = () => {
   const navigate = useNavigate();
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [confirmNewPass, setConfirmNewPass] = useState('');
+  const userId = window.location.pathname.substring(1).split('/')[2];
+  // console.log(userId);
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
-    formData.append('email', email);
+    const data = new FormData();
+    data.append('newPass', newPass);
+    data.append('confirmNewPass', confirmNewPass);
+    data.append('userId', userId);
 
     try {
-      const response = await axiosReq.post('/admin/sign-up', formData);
-      console.log(response);
-      // navigate to sign in after sign up successfully
+      const response = await axiosReq.post('/admin/user/reset-password', data);
+      console.log(response.data);
       if (response.status === 200) {
-        toast.success('Please check your email for confirmation!', {
+        toast.success(response.data.msg, {
           position: "top-center",
-          autoClose: 2800,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -33,17 +32,18 @@ const Signup = () => {
           progress: undefined,
           theme: "light",
         });
+
         setTimeout(() => {
-          navigate('/sign-in');
-        }, 3500);
+          navigate('/sign-in')
+        }, 1500);
       } else {
         return
       }
     } catch (error) {
-      // alert(error.response.data.msg);
-      toast.error(error.response.data.msg, {
+      console.log(error);
+      toast.error(error.data.msg, {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -51,7 +51,7 @@ const Signup = () => {
         progress: undefined,
         theme: "light",
       });
-    }
+    } 
   }
 
   return (
@@ -63,24 +63,18 @@ const Signup = () => {
             <h1 className='mx-3'>THE GIVING CIRCLE</h1>
           </div>
           <Form.Group className="mb-3">
-            <Form.Label>Username</Form.Label>
-            <Form.Control type="text" placeholder="Username" name='username' 
-            onChange={(e) => setUsername(e.target.value)}
+            <Form.Label>New Password</Form.Label>
+            <Form.Control type="password" placeholder="New Password" name='newPass' 
+            onChange={(e) => setNewPass(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="text" placeholder="Email" name='email' 
-            onChange={(e) => setEmail(e.target.value)}
+            <Form.Label>Confirm New Password</Form.Label>
+            <Form.Control type="password" placeholder="Confirm New Password" name='confirNewPass' 
+            onChange={(e) => setConfirmNewPass(e.target.value)}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" name='password' 
-            onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit" className='sign-button' onClick={handleSubmit}>Sign Up</Button>
+          <Button variant="primary" type="submit" className='sign-button' onClick={handleSubmit}>Reset Password</Button>
         </div>
         <ToastContainer
           position="top-right"
@@ -97,6 +91,6 @@ const Signup = () => {
       </div>
     </div>
   )
-}
+};
 
-export default Signup;
+export default ResetPassword;

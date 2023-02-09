@@ -20,7 +20,7 @@ const EditCharity = () => {
 
     fetchEditCharity();
   }, []);
-
+  
   // Form validation
   const [nameTouched, setNameTouched] = useState(false);
   const [recipientTouched, setRecipientTouched] = useState(false);
@@ -32,6 +32,7 @@ const EditCharity = () => {
   const [shortDescTouched, setShortDescTouched] = useState(false);
   const [longDescTouched, setLongDescTouched] = useState(false);
   const [errors, setErrors] = useState({});
+
   const validate = (name, recipient, startDate, endDate, images, target, status, shortDesc, longDesc) => {
     const errors = [];
     if (nameTouched && !name) {
@@ -107,6 +108,8 @@ const EditCharity = () => {
       }
     }
 
+    postCharity();
+
     if (errors.length !== 0) {
       return;
     } else {
@@ -120,13 +123,13 @@ const EditCharity = () => {
       <Sidebar />
     </div>
     <div className='container'>
-      <div className="top-section p-3">
-        <div className="title">
+      <div className="m-2">
+        <div className="d-flex mt-4 justify-content-between align-items-start">
           <h3>Edit Charity</h3>
         </div>
       </div>
-      <div className="container mt-2 px-4">
-        <Form className='d-flex justify-content-around row'>
+      <div className="container mt-5">
+        <Form className='d-flex justify-content-between row'>
           <div className='col-xl-6 col-md-5 col-sm-12'>
             <Form.Group className="mb-3">
               <div className='d-flex justify-content-between px-1'>
@@ -226,7 +229,14 @@ const EditCharity = () => {
             </Form.Group>
           </div>
         </Form>
-        <Button variant="primary" type="submit" onClick={() => handleSubmit(charity._id)}>Update</Button>
+          <Button
+            variant="primary"
+            type="button"
+            className='button'
+            onClick={() => handleSubmit(charity._id)}
+          >
+            Update
+          </Button>
       </div>
     </div>
   </div>

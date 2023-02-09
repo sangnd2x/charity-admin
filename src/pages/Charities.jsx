@@ -11,7 +11,7 @@ const Charities = () => {
   
   // Pagination
   const [page, setPage] = useState(1);
-  const [count, setCount] = useState(4);
+  const [count, setCount] = useState(6);
   const startIndex = (page - 1) * count;
   const endIndex = page * count;
 
@@ -60,17 +60,18 @@ const Charities = () => {
         <Sidebar />
       </div>
       <div className='container'>
-        <div className="top-section p-1 px-4">
-          <div className="title">
+        <div className="m-4">
+          <div className="d-flex mt-4 justify-content-between align-items-start">
             <h3>Charities</h3>
-            <input type="text" placeholder='Search' className='searchBar'
-              onChange={(e) => handleSearch(e)} />
-          </div>
-          <div className='d-flex justify-content-end mx-5'>
-            <Pagination results={charities.length} page={page} setPage={setPage} count={count} />
+            <input
+              type="text"
+              placeholder="Search Charity's name"
+              className='searchBar'
+              onChange={(e) => handleSearch(e)}
+            />
           </div>
         </div>
-        <div className="row">
+        <div className="row mt-5">
           <CharityCard
             charities={charities}
             donated={donated}
@@ -80,6 +81,9 @@ const Charities = () => {
             endIndex={endIndex}
           />
         </div>
+        <div className='d-flex justify-content-end mx-5'>
+            <Pagination results={charities.length} page={page} setPage={setPage} count={count} />
+          </div>
       </div>
     </div>
   )

@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axiosReq from '../components/api/axios';
 import Sidebar from '../components/Sidebar';
 import { Table } from 'react-bootstrap';
 
 const Users = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
+  const [clicked, setClicked] = useState(false);
 
   // Search
   const [query, setQuery] = useState('');
@@ -14,7 +17,7 @@ const Users = () => {
     const fetchUsers = async () => {
       const response = await axiosReq('/admin/users');
       if (response.status === 200) {
-        // console.log(response.data);
+        console.log(response.data);
         setUsers(response.data)
       } else {
         return;
@@ -22,7 +25,7 @@ const Users = () => {
     }
 
     fetchUsers();
-  }, [searched]);
+  }, [searched, clicked]);
 
   const handleSearch = (e) => {
     setQuery(e.target.value);
@@ -43,44 +46,85 @@ const Users = () => {
     fetchSearchedUser();
   }
 
+  const handleEdit = (userId) => {
+    navigate(`/user/edit-info/${userId}`);
+  }
+
+  const handleDeactivate = async (userId) => {
+    setClicked(true);
+    try {
+      const response = await axiosReq.get(`/admin/user/deactivate/${userId}`);
+      console.log(response);
+      setClicked(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className='d-flex flex-row' style={{ width: '100%'}}>
     <div>
       <Sidebar />
     </div>
     <div className='container'>
-      <div className="top-section p-3">
-        <div className="title">
+      <div className="m-2">
+        <div className="d-flex mt-4 justify-content-between align-items-start">
           <h3>Users</h3>
-            <input type="text" placeholder='Search' className='searchBar'
-            onChange={(e) => handleSearch(e)}/> 
+            <input
+              type="text"
+              placeholder="Search User's name"
+              className='searchBar'
+              onChange={(e) => handleSearch(e)}
+            /> 
         </div>
       </div>
-      <div className="newCharity-container row px-5">
-      <Table striped hover className='dashboard-table'>
+      <div className="mt-5 border">
+        <table className='table'>
           <thead>
             <tr>
               <th>ID</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Role</th>
               <th>Registerd At</th>
               <th>Status</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {users && users.map(user => (
-              <tr key={user._id}>
+              <tr key={user._id}
+                style={{ backgroundColor: `${user.status === 'active' ? 'rgba(80, 173, 122, 0.2)' : 'rgba(196, 65, 69, 0.3)'}` }}
+              >
                 <td>{user._id}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
+                <td>{user.role}</td>
                 <td>{new Date(user.createdAt).toLocaleDateString('en-GB')}</td>
                 {user.status === 'active' ?
-                  <td><span style={{ color: 'rgba(109, 188, 166, 1)', fontWeight: 'bold'}}>{user.status}</span></td> :
-                  <td><span style={{ color: 'rgba(229, 124, 102, 1)', fontWeight: 'bold'}}>{user.status}</span></td>}
+                  <td><span style={{ color: 'rgba(80, 173, 122, 1)', fontWeight: 'bold'}}>{user.status}</span></td> :
+                  <td><span style={{ color: 'rgba(196, 65, 69, 1)', fontWeight: 'bold' }}>{user.status}</span></td>}
+                <td>
+                  <button
+                    type='button'
+                    className='editUser-button'
+                    onClick={() => handleEdit(user._id)}
+                  >
+                    Edit
+                  </button>
+                  {user.role !== 'admin' ?
+                    <button
+                      type='button'
+                      className='deleteUser-button'
+                      onClick={() => handleDeactivate(user._id)}
+                    >
+                      Deactivate
+                    </button> : ''}
+                </td>
               </tr>
             ))}
           </tbody>
-        </Table>
+        </table>
       </div>
     </div>
   </div>

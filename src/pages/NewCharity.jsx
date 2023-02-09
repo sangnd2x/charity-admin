@@ -8,7 +8,7 @@ import { Form, Button } from 'react-bootstrap';
 
 const NewCharity = () => {
   const navigate = useNavigate();
-  const [signedIn, setSignedIn] = useState(localStorage.getItem('token') ? true : false);
+  const [signedIn, setSignedIn] = useState(sessionStorage.getItem('token') ? true : false);
   const [name, setName] = useState('');
   const [recipient, setRecipient] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -107,6 +107,7 @@ const NewCharity = () => {
       }
   }
   console.log(errors.length);
+
   return (
     <div className='d-flex flex-row' style={{ width: '100%'}}>
       <div>
@@ -114,13 +115,13 @@ const NewCharity = () => {
       </div>
       {signedIn ?
       <div className='container'>
-        <div className="top-section">
-          <div className="title">
+        <div className="m-2">
+          <div className="d-flex mt-4 justify-content-between align-items-start">
             <h3>New Charity</h3>
           </div>
         </div>
         <div className="container mt-5">
-          <Form className='d-flex justify-content-around row'>
+          <Form className='d-flex justify-content-between row'>
             <div className='col-xl-6 col-md-5 col-sm-12'>
               <Form.Group className="mb-3">
                 <div className='d-flex justify-content-between'>
@@ -204,19 +205,26 @@ const NewCharity = () => {
               </Form.Group>
             </div>
           </Form>
-            <Button variant="primary" type="submit" className='button' onClick={(e) => handleSubmit(e)}>Submit</Button>
-            <ToastContainer
-              position="top-right"
-              autoClose={1000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light">
-            </ToastContainer>
+          <Button
+            variant="primary"
+            type="submit" 
+            className='button'
+            onClick={(e) => handleSubmit(e)}
+          >
+            Submit
+          </Button>
+          <ToastContainer
+            position="top-right"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light">
+          </ToastContainer> 
         </div>
       </div> : <div className='p-3'><h1>You need to sign in!</h1></div>}
     </div>

@@ -1,17 +1,21 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Nav } from 'react-bootstrap'
-import FireLogo from '../assets/img/fire.png';
-import UserAvatar from '../assets/img/user-avt.png'
+import Logo from '../assets/img/logo.png';
+import MaleAvatar from '../assets/img/male-avt.svg'
 import { BsFillGrid1X2Fill, BsFillHeartFill, BsFillPeopleFill, BsFillPlusSquareFill, BsArrowRightSquare, BsFillWalletFill } from 'react-icons/bs';
 
 const Sidebar = () => {
-  const [signedIn, setSignedIn] = useState(localStorage.getItem('token') ? true : false);
+  const path = window.location.pathname;
+  // console.log(path);
+
+  const [signedIn, setSignedIn] = useState(sessionStorage.getItem('token') ? true : false);
   const navigate = useNavigate();
 
   // Sign out
   const handleSignout = () => {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userId');
     navigate('/sign-in');
   }
 
@@ -50,34 +54,37 @@ const Sidebar = () => {
 
   return (
     <div className="sidebarContainer">
-      <div className="d-flex flex-row justify-content-center">
-        <img src={FireLogo} alt="fire-logo" width='60px' height='60px' className='logo'/>
-        <p className='brand mt-3'>Fire Admin</p>
+      <div className="d-flex flex-row justify-content-center mt-4 mx-auto logo">
+        <img src={Logo} alt="fire-logo" width={40} height={40}/>
+        <p className='logo-text mx-2 mt-2'>THE GIVING CIRCLE</p>
       </div>
-      <div className='d-flex flex-column lower-section'>
-        <div className="userInfo">
-          <img src={UserAvatar} alt='user avatar' className='userAvatar'/>
+      <hr className="line" />
+      <div className='d-flex flex-column justify-content-between lower-section'>
+        {/* <div className="userInfo">
+          <img src={MaleAvatar} alt='user avatar' className='userAvatar'/>
           <p>Aidan</p>
-        </div>
-        <div className='d-flex flex-column justify-content-center align-items-start mt-5' style={{ height: 'auto' }}>
+        </div> */}
+        <div className='' style={{ height: 'auto' }}>
         {menu && menu.map((item, i) => (
-          <Nav.Link href={item.path} key={i} className='d-flex flex-row align-items-center justify-content-start link'>
-            <div className='icon'>{item.icon}</div>
-            <div>
-              <p className='mx-3 mt-3'>{item.name}</p>
+          <Nav.Link href={item.path} key={i} className={`${path === item.path ? 'active' : ''}`}> 
+            <div className='d-flex align-items-center ms-5 '>
+              <span className=''>{item.icon}</span>
+              <span className='ms-2'>{item.name}</span>
             </div>
           </Nav.Link>
         ))}
         </div>
-        {signedIn ?
-        <div className="exit" onClick={handleSignout}>
-          <button className='exit-button'>Sign Out</button>
-          <BsArrowRightSquare className='exit-icon' />
-        </div> :
-        <div className="exit" onClick={handleSignin}>
-          <button className='exit-button'>Sign In</button>
-          <BsArrowRightSquare className='exit-icon' />
-        </div>}
+        <div>
+          {signedIn ?
+          <div className="exit" onClick={handleSignout}>
+            <button className='exit-button'>Sign Out</button>
+            <BsArrowRightSquare className='exit-icon' />
+          </div> :
+          <div className="exit" onClick={handleSignin}>
+            <button className='exit-button'>Sign In</button>
+            <BsArrowRightSquare className='exit-icon' />
+          </div>}
+        </div>
       </div>
     </div>
   )

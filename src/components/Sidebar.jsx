@@ -19,9 +19,14 @@ const Sidebar = () => {
     navigate('/sign-in');
   }
 
-  //Sign in
+  // Sign in
   const handleSignin = () => {
     navigate('/sign-in');
+  }
+
+  // Navigate to dashboard
+  const navigateToDashboard = () => {
+    navigate('/dashboard');
   }
 
   const menu = [
@@ -54,7 +59,7 @@ const Sidebar = () => {
 
   return (
     <div className="sidebarContainer">
-      <div className="d-flex flex-row justify-content-center mt-4 mx-auto logo">
+      <div className="d-flex flex-row justify-content-center mt-4 mx-auto logo" onClick={navigateToDashboard}>
         <img src={Logo} alt="fire-logo" width={40} height={40}/>
         <p className='logo-text mx-2 mt-2'>THE GIVING CIRCLE</p>
       </div>

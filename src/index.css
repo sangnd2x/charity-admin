@@ -96,6 +96,10 @@ p {
   /* box-shadow:  8px 0px 10px rgb(145, 52, 28), 4px 0px 4px rgb(194, 89, 63); */
 }
 
+.logo {
+  cursor: pointer;
+}
+
 .logo-text {
   color: var(--red);
   font-weight: 600;

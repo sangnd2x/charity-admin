@@ -39,8 +39,8 @@ const Dashboard = () => {
       setUser(response.data);
     }
 
-    fetchCharities();
     fetchDonations();
+    fetchCharities();
     fetchUsers();
     fetchUser();
   }, []);
@@ -117,7 +117,7 @@ const Dashboard = () => {
               </div>
 
               <div className='row'>
-                <h4 className='ms-2'>Lastes Donations</h4>
+                <h4 className='ms-2'>Latest Donations</h4>
               </div>
               <div className="mx-2 border table-responsive">
                 <table className='table table-responsive'>

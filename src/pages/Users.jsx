@@ -116,7 +116,12 @@ const Users = () => {
                     <button
                       type='button'
                       className='deleteUser-button'
-                      onClick={() => handleDeactivate(user._id)}
+                      onClick={() => {
+                        const confirm = window.confirm('Are you sure you want to deactivate this user?');
+                        if (confirm) {
+                          handleDeactivate(user._id)
+                        }
+                      }}
                     >
                       Deactivate
                     </button> : ''}

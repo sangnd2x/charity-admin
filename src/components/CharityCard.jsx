@@ -80,7 +80,12 @@ const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex,
                 <select
                   className={`${charity.status === 'ongoing' ? 'buttonBorder-green' : charity.status === 'upcoming' ? 'buttonBorder-yellow' : 'buttonBorder-red'}`}
                   defaultValue={charity.status}
-                  onChange={(e) => handleDelete(e.target.value, charity._id)}
+                  onChange={(e) => {
+                    const confirm = window.confirm('Are you sure you want to change the status of this charity?');
+                    if (confirm) {
+                      handleDelete(e.target.value, charity._id)
+                    }
+                  }}
                 >
                   <option value="ongoing">On-going</option>
                   <option value="upcoming">Up-coming</option>

@@ -13,11 +13,12 @@ const Users = () => {
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
 
+  // Fetch all users
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await axiosReq('/admin/users');
       if (response.status === 200) {
-        console.log(response.data);
+        // console.log(response.data);
         setUsers(response.data)
       } else {
         return;
@@ -27,6 +28,7 @@ const Users = () => {
     fetchUsers();
   }, [searched, clicked]);
 
+  // Search user
   const handleSearch = (e) => {
     setQuery(e.target.value);
     if (query) {
@@ -46,14 +48,31 @@ const Users = () => {
     fetchSearchedUser();
   }
 
+  // Navigate to edit info page
   const handleEdit = (userId) => {
     navigate(`/user/edit-info/${userId}`);
   }
 
+  // Deactivate a user whose role is not admin
   const handleDeactivate = async (userId) => {
     setClicked(true);
     try {
       const response = await axiosReq.get(`/admin/user/deactivate/${userId}`);
+      console.log(response);
+      setClicked(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Change role of a user whose role is not admin
+  const handleChangeRole = async (newRole, userId) => {
+    setClicked(true);
+    const data = new FormData();
+    data.append('userId', userId);
+    data.append('newRole', newRole);
+    try {
+      const response = await axiosReq.post(`/admin/user/edit-info/`, data);
       console.log(response);
       setClicked(false);
     } catch (error) {
@@ -99,7 +118,31 @@ const Users = () => {
                 <td>{user._id}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
-                <td>{user.role}</td>
+                <td>
+                  {/* if the user is not admin, allow to change role */}
+                  {user.role !== 'admin' ?
+                    <select
+                      defaultValue={user.role}
+                      style={{ border: '1px solid transparent', borderRadius: '5px', backgroundColor: 'transparent' }}
+                      onChange={(e) => {
+                        const confirm = window.confirm('Are you sure you want to change the role of this user?');
+                          if (confirm) {
+                            handleChangeRole(e.target.value, user._id)
+                          }
+                      }}
+                    >
+                      <option value="admin">Admin</option>
+                      <option value="donor">Donor</option>
+                    </select> : 
+                    <select
+                    defaultValue={user.role}
+                    style={{ border: '1px solid transparent', borderRadius: '5px', backgroundColor: 'transparent' }}
+                    disabled
+                  >
+                    <option value="admin">Admin</option>
+                    <option value="donor">Donor</option>
+                  </select>}
+                </td>
                 <td>{new Date(user.createdAt).toLocaleDateString('en-GB')}</td>
                 {user.status === 'active' ?
                   <td><span style={{ color: 'rgba(80, 173, 122, 1)', fontWeight: 'bold'}}>{user.status}</span></td> :
@@ -113,6 +156,7 @@ const Users = () => {
                     Edit
                   </button>
                   {user.role !== 'admin' ?
+                    // If user is not admin, show deactivate button
                     <button
                       type='button'
                       className='deleteUser-button'

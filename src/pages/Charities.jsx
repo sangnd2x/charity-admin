@@ -19,6 +19,7 @@ const Charities = () => {
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
 
+  // Fetch all charities from server
   useEffect(() => {
     const getCharities = async () => {
       const response = await axiosReq.get('/admin/charities');
@@ -34,10 +35,8 @@ const Charities = () => {
 
     getCharities();
   }, [isTouched, searched]);
-  // console.log(isTouched);
-  // console.log(charities);
-  // console.log(page);
 
+  // Fetch search charity
   const handleSearch = (e) => {
     setQuery(e.target.value);
     if (query) {

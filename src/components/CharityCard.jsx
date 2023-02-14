@@ -7,19 +7,23 @@ import { BsPencilSquare, BsXLg } from 'react-icons/bs';
 const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex, donated }) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState('');
-  console.log(donated);
+
   const results = charities.slice(startIndex, endIndex);
-  // console.log(results);
+
+  // Navigate to charity edit page
   const handleEdit = (id) => {
     const charityId = id;
     navigate(`/edit-charity/${charityId}`, { state: { charityId } });
   };
 
+  // Change status of the charity
   const handleDelete = async (status, id) => {
     setStatus(status);
+
     const data = new FormData();
     data.append('status', status);
     data.append('charityId', id);
+    
     const response = await axiosReq.post(`/admin/delete-charity`, data);
     console.log(response);
     if (response.status === 200) {

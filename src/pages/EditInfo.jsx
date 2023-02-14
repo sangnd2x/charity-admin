@@ -12,24 +12,32 @@ const EditInfo = () => {
   const [newUsername, setNewUsername] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newStatus, setNewStatus] = useState([]);
+  const [newRole, setNewRole] = useState('');
+  const [newAvatar, setNewAvatar] = useState([]);
   console.log(newStatus);
 
+  // Fetch selected user's info
   useEffect(() => {
     const fetchUser = async () => {
       const response = await axiosReq.get(`/admin/users/${userId}`);
-      // console.log(response.data)
+      console.log(response.data)
       setUser(response.data);
     }
 
     fetchUser();
   }, []);
 
+  // Submit the changes to server
   const handleSubmit = async () => {
     const data = new FormData();
     data.append('userId', userId);
     data.append('newUsername', newUsername);
     data.append('newEmail', newEmail);
     data.append('newStatus', newStatus);
+    data.append('newRole', newRole);
+    for (let i = 0; i <= newAvatar.length; i++){
+      data.append('newAvatar', newAvatar[i]);
+    }
 
     try {
       const response = await axiosReq.post('admin/user/edit-info', data);
@@ -50,7 +58,7 @@ const EditInfo = () => {
 
       setTimeout(() => {
         navigate('/dashboard');
-      }, 1500)
+      }, 1500);
     } catch (error) {
       console.log(error);
       toast.error(error.data.msg, {
@@ -65,6 +73,7 @@ const EditInfo = () => {
       });
     }
   }
+  
   return (
     <div className='d-flex flex-row' style={{ width: '100%'}}>
       <div>
@@ -105,9 +114,20 @@ const EditInfo = () => {
               defaultValue={user.status}
               onChange={(e) => setNewStatus(e.target.value)}
             >
+              <option value='default' disabled>Select Status</option>
               <option value='active'>Active</option>
               <option value='inactive'>Inactive</option>
             </Form.Select>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <div className="d-flex justify-content-between px-1">
+              <Form.Label>Select Images</Form.Label>
+              {/* <Form.Text className='error-msg'>{errors.images}</Form.Text> */}
+            </div>
+            <Form.Control type="file" name='images' multiple
+              onChange={(e) => setNewAvatar(e.target.files)} 
+              // onBlur={() => setImagesTouched(true)}
+            />
           </Form.Group>
           <Button variant="primary" type="submit" className='sign-button' onClick={handleSubmit}>Update</Button>
         </div>

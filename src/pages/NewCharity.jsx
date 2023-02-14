@@ -22,7 +22,7 @@ const NewCharity = () => {
   const [imgUrls, setImgUrls] = useState([]);
 
   // Form validation
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState([]);
   const validate = (name, recipient, startDate, endDate, images, target, status, shortDesc, longDesc) => {
     const errors = [];
     if (!name) {
@@ -55,6 +55,7 @@ const NewCharity = () => {
     return errors;
   }
 
+  // Submit charity's info to server
   const postCharity = async (data) => {
     try {
         console.log('clicked')
@@ -82,13 +83,9 @@ const NewCharity = () => {
   // Add new charity
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(errors.length);
-    // console.log('clicked');
-    setErrors(validate(name, recipient, startDate, endDate, images, target, status, shortDesc, longDesc));
-    console.log('errors', errors);
-    // setErrors(validate(name, images));
 
-    // // const imgData = new FormData();
+    setErrors(validate(name, recipient, startDate, endDate, images, target, status, shortDesc, longDesc));
+
     const data = new FormData();
     data.append('name', name);
     data.append('recipient', recipient);
@@ -102,11 +99,6 @@ const NewCharity = () => {
       data.append('images', images[i]);
     }
 
-    // if (errors.length !== 0) {
-    //   return;
-    // } else {
-    //   postCharity(data);
-    // }
     if (errors.length === 0) {
       postCharity(data);
     } else {
@@ -122,7 +114,6 @@ const NewCharity = () => {
       });
     }
   }
-  // console.log(longDesc)
 
   return (
     <div className='d-flex flex-row' style={{ width: '100%'}}>
@@ -177,12 +168,7 @@ const NewCharity = () => {
                   <Form.Text className='error-msg'>{errors.images}</Form.Text>
                 </div>
                 <Form.Control type="file" name='images' multiple
-                    // onChange={(e) => {
-                    //   setImages(e.target.files);
-                    //   imagesUploader();
-                    // }}
                   onChange={(e) => setImages(e.target.files)}
-                    // onChange={(e) => postImages(e.target.files)}
                 />
               </Form.Group>
             </div>

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axiosReq from '../components/api/axios';
 import Sidebar from '../components/Sidebar';
 import { Form, Button } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 
 const EditCharity = () => {
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ const EditCharity = () => {
   const [shortDesc, setShortDesc] = useState('');
   const [images, setImages] = useState([]);
 
+  // Submit the changes to server
   const handleSubmit = (id) => {
     setErrors(validate(name, recipient, startDate, endDate, images, target, status, shortDesc, longDesc));
     // e.preventDefault();
@@ -101,7 +103,20 @@ const EditCharity = () => {
         const response = await axiosReq.post('/admin/edit-charity', data)
         console.log(response);
         if (response.status === 200) {
-          navigate('/charities');
+          toast.success(response.data.msg, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+
+          setTimeout(() => {
+            navigate('/charities');
+          }, 1500);
         }
       } catch (error) {
         console.log(error);
@@ -110,13 +125,13 @@ const EditCharity = () => {
 
     postCharity();
 
-    if (errors.length !== 0) {
-      return;
-    } else {
+    if (errors.length === 0) {
       postCharity();
+    } else {
+      return;
     }
   }
-  console.log(errors)
+
   return (
     <div className='d-flex flex-row' style={{ width: '100%'}}>
     <div>
@@ -229,14 +244,26 @@ const EditCharity = () => {
             </Form.Group>
           </div>
         </Form>
-          <Button
-            variant="primary"
-            type="button"
-            className='button'
-            onClick={() => handleSubmit(charity._id)}
-          >
-            Update
-          </Button>
+        <Button
+          variant="primary"
+          type="button"
+          className='button'
+          onClick={() => handleSubmit(charity._id)}
+        >
+          Update
+        </Button>
+        <ToastContainer
+          position="top-right"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light">
+        </ToastContainer> 
       </div>
     </div>
   </div>

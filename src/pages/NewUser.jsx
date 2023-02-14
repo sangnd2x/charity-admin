@@ -13,6 +13,7 @@ const NewUser = () => {
   const [email, setEmail] = useState('')
   const [role, setRole] = useState('')
 
+  // Submit new user to server
   const handleSubmit = () => {
     const data = new FormData();
     data.append('username', username);
@@ -56,6 +57,7 @@ const NewUser = () => {
 
     postNewUser();
   }
+  
   return (
     <div className='d-flex flex-row' style={{ width: '100%'}}>
       <div>

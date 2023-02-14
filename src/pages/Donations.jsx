@@ -13,6 +13,7 @@ const Donations = () => {
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
 
+  // Fetch all donations from server
   useEffect(() => {
     const fetchDonations = async () => {
       const response = await axiosReq.get('/admin/donations');
@@ -23,6 +24,7 @@ const Donations = () => {
     fetchDonations();
   }, [searched]);
 
+  // Fetch searched donation
   const handleSearch = (e) => {
     setQuery(e.target.value);
     if (query) {

@@ -11,7 +11,7 @@ const Charities = () => {
   
   // Pagination
   const [page, setPage] = useState(1);
-  const [count, setCount] = useState(6);
+  const [count, setCount] = useState(3);
   const startIndex = (page - 1) * count;
   const endIndex = page * count;
 
@@ -26,6 +26,7 @@ const Charities = () => {
       if (response.status === 200) {
         setCharities(response.data.charities);
         setDonated(response.data.donated);
+        console.log(response.data)
       } else {
         return;
       }
@@ -71,7 +72,7 @@ const Charities = () => {
             />
           </div>
         </div>
-        <div className="row mt-5">
+        <div className="row d-flex justify-content-center align-items-center mt-5">
           <CharityCard
             charities={charities}
             donated={donated}

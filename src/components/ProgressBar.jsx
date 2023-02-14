@@ -1,7 +1,7 @@
 import React from 'react'
 
 const ProgressBar = (props) => {
-  const { bgcolor, completed } = props;
+  const { completed } = props;
 
   // Check if there's more than 100% completed
   let percentage = 0;
@@ -14,14 +14,14 @@ const ProgressBar = (props) => {
   const containerStyles = {
     height: 15,
     width: '100%',
-    backgroundColor: "rgba(196, 65, 69, 0.7)",
+    backgroundColor: "rgba(196, 65, 69, 0.5)",
     borderRadius: 50,
     margin: '20px 0' 
   }
 
   const fillerStyles = {
     height: '100%',
-    width: `${percentage}`,
+    width: `${percentage}%`,
     backgroundColor: 'rgba(196, 65, 69, 1)',
     transition: 'width 1s ease-in-out',
     borderRadius: 'inherit',

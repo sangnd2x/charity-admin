@@ -61,7 +61,8 @@ p {
 }
 
 .button:hover {
-  background-color: var(--button-hover);
+  background-color: var(--red);
+  border: 1px solid transparent;
 }
 
 .error-msg {
@@ -218,8 +219,9 @@ p {
 
 /* Card Component Styling */
 .card {
-  width: 22rem;
-  height: fit-content;
+  width: 25rem;
+  min-height: 25rem;
+  max-height: 30rem;
   background-color: var(--card);
   margin: 20px 10px;
   border-radius: 10px;
@@ -281,7 +283,9 @@ p {
 }
 
 .card-button {
-  border: 1px solid var(--green)
+  border: 1px solid transparent;
+  background-color: var(--green);
+  color: white;
 }
 
 .buttonBorder-green {

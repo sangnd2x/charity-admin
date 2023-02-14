@@ -51,6 +51,11 @@ const Sidebar = () => {
       icon: <BsFillPlusSquareFill />
     },
     {
+      path: '/new-user',
+      name: 'New User',
+      icon: <BsFillPlusSquareFill />
+    },
+    {
       path: '/users',
       name: 'Users',
       icon: <BsFillPeopleFill />

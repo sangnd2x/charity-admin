@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import axiosReq from '../components/api/axios';
 import { ToastContainer, toast } from 'react-toastify';
-import Resizer from 'react-image-file-resizer';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Sidebar from '../components/Sidebar';
 import { Form, Button } from 'react-bootstrap';
 
@@ -18,6 +19,7 @@ const NewCharity = () => {
   const [longDesc, setLongDesc] = useState('');
   const [shortDesc, setShortDesc] = useState('');
   const [images, setImages] = useState([]);
+  const [imgUrls, setImgUrls] = useState([]);
 
   // Form validation
   const [errors, setErrors] = useState({});
@@ -53,60 +55,74 @@ const NewCharity = () => {
     return errors;
   }
 
-  // console.log(images);
-  // console.log(startDate);
-  // console.log(endDate);
-
- 
-  // Add new charity
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    setErrors(validate(name, recipient, startDate, endDate, images, target, status, shortDesc, longDesc));
-
-    const data = new FormData();
-      data.append('name', name);
-      data.append('recipient', recipient);
-      data.append('startDate', startDate);
-      data.append('endDate', endDate);
-      data.append('target', target);
-      data.append('status', status);
-      data.append('longDesc', longDesc);
-      data.append('shortDesc', shortDesc);
-      for (let i = 0; i < images.length; i++) {
-        data.append('images', images[i]);
-      }
-
-      const postCharity = async () => {
-        try {
-          const response = await axiosReq.post('/admin/new-charity', data);
-          if (response.status === 200) {
-            toast.success('New Charity Added', {
-              position: "top-right",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-            setTimeout(() => {
-              navigate('/charities');
-            }, 1500);
-          }
-        } catch (error) {
-          console.log(error);
+  const postCharity = async (data) => {
+    try {
+        console.log('clicked')
+        const response = await axiosReq.post('/admin/new-charity', data);
+        if (response.status === 200) {
+          toast.success('New Charity Added', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setTimeout(() => {
+            navigate('/charities');
+          }, 1500);
         }
-      };
-
-      if (errors.length !== 0) {
-        return;
-      } else {
-        postCharity();
+      } catch (error) {
+        console.log(error);
       }
+    };
+
+  // Add new charity
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log(errors.length);
+    // console.log('clicked');
+    setErrors(validate(name, recipient, startDate, endDate, images, target, status, shortDesc, longDesc));
+    console.log('errors', errors);
+    // setErrors(validate(name, images));
+
+    // // const imgData = new FormData();
+    const data = new FormData();
+    data.append('name', name);
+    data.append('recipient', recipient);
+    data.append('startDate', startDate);
+    data.append('endDate', endDate);
+    data.append('target', target);
+    data.append('status', status);
+    data.append('longDesc', longDesc);
+    data.append('shortDesc', shortDesc);
+    for (let i = 0; i < images.length; i++) {
+      data.append('images', images[i]);
+    }
+
+    // if (errors.length !== 0) {
+    //   return;
+    // } else {
+    //   postCharity(data);
+    // }
+    if (errors.length === 0) {
+      postCharity(data);
+    } else {
+      toast.error('There are errors', {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   }
-  console.log(errors.length);
+  // console.log(longDesc)
 
   return (
     <div className='d-flex flex-row' style={{ width: '100%'}}>
@@ -160,8 +176,14 @@ const NewCharity = () => {
                   <Form.Label>Select Images</Form.Label>
                   <Form.Text className='error-msg'>{errors.images}</Form.Text>
                 </div>
-                <Form.Control type="file" multiple name='images'
-                  onChange={(e) => setImages(e.target.files)} />
+                <Form.Control type="file" name='images' multiple
+                    // onChange={(e) => {
+                    //   setImages(e.target.files);
+                    //   imagesUploader();
+                    // }}
+                  onChange={(e) => setImages(e.target.files)}
+                    // onChange={(e) => postImages(e.target.files)}
+                />
               </Form.Group>
             </div>
             <div className='col-xl-6 col-md-5 col-sm-12'>
@@ -179,8 +201,10 @@ const NewCharity = () => {
                   <Form.Text className='error-msg'>{errors.status}</Form.Text>
                 </div>
                 <Form.Select aria-label="Default select example" name='status' 
+                    defaultValue="default"
                     onChange={(e) => setStatus(e.target.value)}
-                  defaultValue="default">
+                    style={{height: '50px'}}
+                  >
                   <option value="default" disabled>Select status</option>
                   <option value="ongoing">On-going</option>
                   <option value="upcoming">Up-coming</option>
@@ -200,18 +224,35 @@ const NewCharity = () => {
                   <Form.Label>Long Description</Form.Label>
                   <Form.Text className='error-msg'>{errors.longDesc}</Form.Text>
                 </div>
-                <Form.Control as="textarea" placeholder="Long Description" style={{height: '7.7rem'}} name='long_desc' 
-                  onChange={(e) => setLongDesc(e.target.value)}/>
+                {/* <Form.Control as="textarea" placeholder="Long Description" style={{height: '7.7rem'}} name='long_desc' 
+                  onChange={(e) => setLongDesc(e.target.value)}/> */}
+                <CKEditor
+                  editor={ClassicEditor} 
+                  onReady={(editor) => {
+                    editor.editing.view.change((writer) => {
+                      writer.setStyle(
+                        'height',
+                        '110px',
+                        editor.editing.view.document.getRoot()
+                      );
+                    });
+                  }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    console.log(data.replace(/<[^>]+>/g, ''))
+                    setLongDesc(data);
+                  }}  
+                  
+                />
               </Form.Group>
             </div>
           </Form>
           <Button
-            variant="primary"
-            type="submit" 
+            type='submit'
             className='button'
-            onClick={(e) => handleSubmit(e)}
+            onClick={handleSubmit}
           >
-            Submit
+            Add New Charity
           </Button>
           <ToastContainer
             position="top-right"

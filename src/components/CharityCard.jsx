@@ -7,7 +7,7 @@ import { BsPencilSquare, BsXLg } from 'react-icons/bs';
 const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex, donated }) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState('');
-  console.log(status);
+  console.log(donated);
   const results = charities.slice(startIndex, endIndex);
   // console.log(results);
   const handleEdit = (id) => {
@@ -44,45 +44,48 @@ const CharityCard = ({ charities, isTouched, setIsTouched, startIndex, endIndex,
                     <h6 className="red">{charity.status}</h6>
                   }
                 </div>
-                <div className='d-flex flex-column'>
-                  <button
-                    type='button'
-                    className='card-button mb-1'
-                    onClick={() => handleEdit(charity._id)}
-                  >
-                    Edit
-                  </button>
-                  <select
-                    className={`${charity.status === 'ongoing' ? 'buttonBorder-green' : charity.status === 'upcoming' ? 'buttonBorder-yellow' : 'buttonBorder-red'}`}
-                    defaultValue={charity.status}
-                    onChange={(e) => handleDelete(e.target.value, charity._id)}
-                  >
-                    <option value="ongoing">On-going</option>
-                    <option value="upcoming">Up-coming</option>
-                    <option value="stopped">Stopped</option>
-                  </select>
-                  {/* <BsPencilSquare style={{ cursor: 'pointer' }} onClick={() => handleEdit(charity._id)} className='card-icons' />
-                  <BsXLg style={{ cursor: 'pointer' }} onClick={() => handleDelete(charity._id)} className='card-icons' /> */}
-                </div>
+                
               </div>
               <div className="card-text">{charity.short_desc}</div>
               <div className="card-img d-flex flex-row justify-content-center" >
                 <img src={charity.images[0]} alt="charity1" style={{ width: '33rem', height: '5rem' }} />
               </div>
               <div className="card-text">
-                <ProgressBar bgcolor={`rgba(229, 124, 102, 1)`} completed={donated.filter(donate => donate.charityName === charity.name)[0].progress}/>
+                <ProgressBar
+                  bgcolor={`rgba(229, 124, 102, 1)`}
+                  completed={donated.filter(donate => donate.charityName === charity.name)[0].progress}
+                  // completed={`80`}
+                />
               </div>
               <div className="date">
                 <p className='card-span'>{new Date(charity.startDate).toLocaleDateString('en-GB')}</p>
                 <p className='card-span'>{new Date(charity.endDate).toLocaleDateString('en-GB')}</p>
               </div>
-              <div className="target">
+              <div className="target d-flex flex-column">
                 <p><span className='card-span'>Raised:</span> {donated.map(donate => {
                   if (donate.charityName === charity.name) {
-                    return Intl.NumberFormat('en-US').format(donate.donated);
+                    return Intl.NumberFormat('en-US').format(donate.donatedAmount);
                   }
                 })} VND</p>
                 <p><span className='card-span'>Goal:</span> {Intl.NumberFormat('en-US').format(charity.target)} VND</p>
+              </div>
+              <div className='d-flex justify-content-around'>
+                <button
+                  type='button'
+                  className='card-button mb-1'
+                  onClick={() => handleEdit(charity._id)}
+                >
+                  Edit
+                </button>
+                <select
+                  className={`${charity.status === 'ongoing' ? 'buttonBorder-green' : charity.status === 'upcoming' ? 'buttonBorder-yellow' : 'buttonBorder-red'}`}
+                  defaultValue={charity.status}
+                  onChange={(e) => handleDelete(e.target.value, charity._id)}
+                >
+                  <option value="ongoing">On-going</option>
+                  <option value="upcoming">Up-coming</option>
+                  <option value="stopped">Stopped</option>
+                </select>
               </div>
             </div>
           </div>

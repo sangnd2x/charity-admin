@@ -6,6 +6,7 @@ import EditCharity from "./pages/EditCharity";
 import Dashboard from "./pages/Dashboard";
 import Donations from "./pages/Donations";
 import NewCharity from "./pages/NewCharity";
+import NewUser from "./pages/NewUser";
 import Users from "./pages/Users";
 import Verified from "./pages/Verified";
 import EditPassword from "./pages/EditPassword";
@@ -30,6 +31,7 @@ function App() {
         <Route path='/edit-charity/:charityId' element={<EditCharity />} />
         <Route path='/donations' element={<Donations />} />
         <Route path='/new-charity' element={<NewCharity />} />
+        <Route path='/new-user' element={<NewUser />} />
         <Route path='/users' element={<Users />} />
       </Routes>
     </Router>
